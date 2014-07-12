@@ -1,3 +1,4 @@
+-- Table to manage customer database
 CREATE TABLE `customer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',

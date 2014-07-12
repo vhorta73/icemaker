@@ -1,3 +1,4 @@
+-- Table to manage which ingredients compose a recipe
 CREATE TABLE `recipe_ingredient` (
   `recipe_id` int(11) NOT NULL DEFAULT '0',
   `ingredient_id` int(11) NOT NULL DEFAULT '0',

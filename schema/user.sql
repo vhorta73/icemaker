@@ -1,3 +1,4 @@
+-- Table to manage which tools an user has access to, and at which level.
 CREATE TABLE `user_access` (
     `user_id` INT(11) NOT NULL DEFAULT 0,
     `label` VARCHAR(255) NOT NULL DEFAULT '',
@@ -8,6 +9,7 @@ CREATE TABLE `user_access` (
     UNIQUE KEY (`user_id`,`label`)
 );
 
+-- Table to manage intranet users and their password access.
 CREATE TABLE `user` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL DEFAULT '',

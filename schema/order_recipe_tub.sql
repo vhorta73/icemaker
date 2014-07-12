@@ -1,3 +1,5 @@
+-- Table to manage the quantity of packages per recipe order. 
+-- One recipe may have several different package requests.
 CREATE TABLE `order_recipe_tub` (
   `order_recipe_id` int(11) NOT NULL,
   `package_id` int(11) NOT NULL,
