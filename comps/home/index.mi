@@ -1,0 +1,81 @@
+% #+--------------------------------------------+
+% # MAIN template after tool selection was made |
+% #+--------------------------------------------+
+
+<%class>
+    has 's';
+</%class>
+
+<style>
+#tool-nav {
+    position: absolute; left: 2%; float:left; 
+    width: 96%; height: 100%; z-index: 1;
+}
+#title {
+    position: absolute; align:center;
+}
+</style>
+
+
+<div id='tool-nav'>
+    <div align='center'>
+        <h2><% $data->{$s}->{title} | H %></h2>
+    </div>
+
+% if ( defined $s and defined $data->{$s} 
+%      and defined $data->{$s}->{template} ) 
+% {
+    <div><& $data->{$s}->{template}, s => $s &></div>
+% }
+</div>
+
+
+<%init>
+    my $logged_in = $m->session->{logged_in};
+    $m->redirect('/login') if !$logged_in;
+
+    my $s = $m->request_args()->{s};
+
+    # s.name => {
+    #    title => "Title to be shown and the top",
+    #    template => "dir/plus/main_per_tool_template.mc" to be used 
+    my $data = {
+        recipeorders => {
+            title => "Recipe Orders",
+            template => "/tools/recipeorders/recipeorders.mc",
+        },
+        recipes => {
+            title => "Recipe Setup",
+            template => "/tools/recipes/recipes.mc",
+        },
+        ingredients => {
+            title => "Ingredient Setup",
+            template => "/tools/ingredients/ingredients.mc",
+        },
+        packages => {
+            title => "Package Setup",
+            template => "/tools/packages/packages.mc",
+        },
+        thresholds => {
+            title => "Stock Threshold Levels",
+            template => "/tools/thresholds/thresholds.mc",
+        },
+        machines => {
+            title => "Machine Setup",
+            template => "/tools/machines/machines.mc",
+        },
+        customers => {
+            title => "Customer Setup",
+            template => "/tools/customers/customers.mc",
+        },
+        suppliers => {
+            title => "Supplier Setup",
+            template => "/tools/suppliers/suppliers.mc",
+        },
+        users => {
+            title => "User Setup",
+            template => "/tools/users/users.mc",
+        },
+    };
+
+</%init>

@@ -1,0 +1,42 @@
+<%class>
+has 'header' => (required => 1);
+has 'data' => (required => 1);
+</%class>
+
+<style>
+#header { background-color: #DADADA; text-align:center; }
+#tablebody { background-color: #DAFFDA; text-align:center; }
+#centeredtext { text-align:center; }
+#editlabel { text-align:right; background-color: white; }
+#editdata { text-align:left; background-color: white; }
+#tableedit { left:25%; float:center; width:50%; text-align:center; background-color: white; }
+#access { text-align:center; background-color: white; }
+#active { background-color: #DDFFDD; }
+#cancelled { background-color: #FFEEAA; }
+#frozen { background-color: #DDEEFF; }
+#deleted { background-color: #EEEEEE; }
+#default { background-color: #AAAAAA; }
+#message { background-color: #AAAAAA; text-align:center; text-color:red; }
+</style>
+
+<table>
+    <tr id='header'>
+%     foreach my $column ( @$header ) {
+        <td><% $column | H %></td>
+%     }
+    </tr>
+    <tr id='tablebody'>
+%    foreach my $column ( @$data ) {
+        <td><% $column | H %></td>
+%    } 
+    </tr>
+</table>
+
+<%init>
+    my $header = $.header;
+    my $data = $.data;
+    die "header is not an ARRAY ref" unless ref($header) eq "ARRAY";
+    die "data is not an ARRAY ref" unless ref($data) eq "ARRAY";
+
+
+</%init>
