@@ -17,6 +17,9 @@ CREATE TABLE `user` (
     `creation_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `last_updated_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
-    KEY(`username`), KEY(`name`), KEY(`status`),
-    KEY(`creation_date`), KEY (`last_updated_date`)
+    KEY(`username`), 
+    KEY(`name`), 
+    KEY(`status`),
+    KEY(`creation_date`), 
+    KEY (`last_updated_date`)
 );
