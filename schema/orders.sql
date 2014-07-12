@@ -1,3 +1,4 @@
+-- Main orders table, linked to the customer ordering.
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,

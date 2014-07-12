@@ -1,3 +1,4 @@
+-- Table to manage recipes and recipe attributes
 CREATE TABLE `recipe` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
