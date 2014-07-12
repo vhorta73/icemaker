@@ -4,9 +4,6 @@ use warnings;
 use strict;
 
 use Poet::Script qw($conf $poet);
-use Icemaker::Database::DBS;
-use Icemaker::Internal::User;
-use Data::Dumper;
 
 my $user_db = $conf->get('db.user_db');
 my @basics = qw/recipeorders suppliers users machines ingredients packages recipes customers/;
@@ -32,7 +29,7 @@ sub _load {
         },
         bind_values => [ $self->{id} ],
     };
-    my $user_access = Icemaker::Database::DBS->new()->get_hasharray($query);
+    my $user_access = $::DBS->get_hasharray($query);
 
     foreach my $h ( @$user_access ) {
         $self->{user_access}->{$h->{label}} = $h;
@@ -65,7 +62,7 @@ sub grant_permission {
         bind_values => [ $self->{id}, $label ],
     };
 
-    if ( my $existing = Icemaker::Database::DBS->new()->get_hash($query) ) {
+    if ( my $existing = $::DBS->get_hash($query) ) {
         my $query = {
             db => $user_db,
             sql => qq{
@@ -75,7 +72,7 @@ sub grant_permission {
             },
             bind_values => [ "Y", $self->{id}, $label ],
         };
-        Icemaker::Database::DBS->new()->execute($query);
+        $::DBS->execute($query);
 
     } else {
         my $query = {
@@ -85,7 +82,7 @@ sub grant_permission {
             },
             bind_values => [ $self->{id}, $label, "Y", $level ],
         };
-        Icemaker::Database::DBS->new()->execute($query);
+        $::DBS->execute($query);
     }
 }
 
@@ -102,7 +99,7 @@ sub revoke_permission {
     };
 
     # If not existing, not permissions exist to be revoked
-    if ( my $existing = Icemaker::Database::DBS->new()->get_hash($query) ) {
+    if ( my $existing = $::DBS->get_hash($query) ) {
         my $query = {
             db => $user_db,
             sql => qq{
@@ -112,7 +109,7 @@ sub revoke_permission {
             },
             bind_values => [ "N", $self->{id}, $label ],
         };
-        Icemaker::Database::DBS->new()->execute($query);
+        $::DBS->execute($query);
     }
 }
 
@@ -128,7 +125,7 @@ sub grant_basics {
             bind_values => [ $self->{id}, $label ],
         };
 
-        my $exists = Icemaker::Database::DBS->new()->get_hash($query);
+        my $exists = $::DBS->get_hash($query);
         if ( defined $exists and $exists->{user_id} ) {
         } else {
             $query = {
@@ -139,7 +136,7 @@ sub grant_basics {
                 bind_values => [ $self->{id}, $label ],
             };
         }
-        Icemaker::Database::DBS->new()->execute($query);
+        $::DBS->execute($query);
     }
 }
 

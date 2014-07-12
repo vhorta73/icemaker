@@ -4,8 +4,6 @@ use warnings;
 use strict;
 
 use Poet qw($conf $poet);
-use Icemaker::Database::DBS;
-use Data::Dumper;
 
 my $supplier_db = $conf->get('db.supplier_db');
 
@@ -36,7 +34,7 @@ sub _load {
         }
     }
  
-    my $supplier = Icemaker::Database::DBS->new()->get_hasharray({
+    my $supplier = $::DBS->get_hasharray({
         db  => $supplier_db,
         sql => qq{ SELECT * FROM supplier WHERE $where },
         bind_values => $bind,
@@ -85,7 +83,7 @@ sub create_supplier {
         bind_values => [ $args->{name} ],
     };
 
-    Icemaker::Database::DBS->new()->execute($query);
+    $::DBS->execute($query);
 }
 
 sub _set_status {
@@ -100,7 +98,7 @@ sub _set_status {
         bind_values => [ $args->{status}, $args->{id} ],
     };
 
-    Icemaker::Database::DBS->new()->execute($query);
+    $::DBS->execute($query);
 }
 
 sub activate_supplier {

@@ -5,6 +5,7 @@ use strict;
 
 use Poet::Script qw($conf $poet);
 use Icemaker::Database::DBS;
+use Icemaker::Internal::Permissions;
 use Icemaker::Internal::Login;
 use Test::More;
 use Test::MockModule;

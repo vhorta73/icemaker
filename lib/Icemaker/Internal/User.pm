@@ -4,8 +4,6 @@ use warnings;
 use strict;
 
 use Poet qw($conf $poet);
-use Icemaker::Database::DBS;
-use Data::Dumper;
 
 my $user_db = $conf->get('db.user_db');
 
@@ -36,7 +34,7 @@ sub _load {
         }
     }
  
-    my $user = Icemaker::Database::DBS->new()->get_hasharray({
+    my $user = $::DBS->get_hasharray({
         db  => $user_db,
         sql => qq{ SELECT * FROM user WHERE $where },
         bind_values => $bind,
@@ -85,14 +83,14 @@ sub create_user {
         bind_values => [ $args->{name}, $args->{username} ],
     };
 
-    Icemaker::Database::DBS->new()->execute($query);
+    $::DBS->execute($query);
 }
 
 sub get_user_by_username {
     my $self = shift;
     my $username = shift || return;
     
-    my $user = Icemaker::Database::DBS->new()->get_hash({
+    my $user = $::DBS->get_hash({
         db  => $user_db,
         sql => qq{ SELECT * FROM user WHERE username = ? },
         bind_values => [ $username ],
@@ -113,7 +111,7 @@ sub _set_status {
         bind_values => [ $args->{status}, $args->{id} ],
     };
 
-    Icemaker::Database::DBS->new()->execute($query);
+    $::DBS->execute($query);
 }
 
 sub delete_user {

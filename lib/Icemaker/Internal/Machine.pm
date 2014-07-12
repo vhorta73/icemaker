@@ -4,8 +4,6 @@ use warnings;
 use strict;
 
 use Poet qw($conf $poet);
-use Icemaker::Database::DBS;
-use Data::Dumper;
 
 my $machine_db = $conf->get('db.machine_db');
 
@@ -24,6 +22,7 @@ sub _load {
 
     my $where = " 1 ";
     my $bind;
+
     foreach my $key ( qw/id name/ ) {
         if ( defined $args->{$key} ) {
             if ( defined $args->{strict} ) {
@@ -36,7 +35,7 @@ sub _load {
         }
     }
  
-    my $machine = Icemaker::Database::DBS->new()->get_hasharray({
+    my $machine = $::DBS->get_hasharray({
         db  => $machine_db,
         sql => qq{ SELECT * FROM machine WHERE $where },
         bind_values => $bind,
@@ -85,7 +84,7 @@ sub create_machine {
         bind_values => [ $args->{name} ],
     };
 
-    Icemaker::Database::DBS->new()->execute($query);
+    $::DBS->execute($query);
 }
 
 sub _set_status {
@@ -100,7 +99,7 @@ sub _set_status {
         bind_values => [ $args->{status}, $args->{id} ],
     };
 
-    Icemaker::Database::DBS->new()->execute($query);
+    $::DBS->execute($query);
 }
 
 sub activate_machine {

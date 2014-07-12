@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use Poet::Script qw($conf);
-use Icemaker::Internal::User;
 
 my $user_db = $conf->get('db.user_db');
 
@@ -42,7 +41,7 @@ sub load_user_session {
     my $m = shift || return;
     my $username = shift || return;
 
-    my $user_data = Icemaker::Database::DBS->new()->get_hash({
+    my $user_data = $::DBS->get_hash({
         db  => $user_db,
         sql => qq{
             SELECT * 
@@ -54,7 +53,7 @@ sub load_user_session {
 
     delete($user_data->{password});
 
-    my $access = Icemaker::Database::DBS->new()->get_hasharray({
+    my $access = $::DBS->get_hasharray({
         db  => $user_db,
         sql => qq{
             SELECT ua.label, ua.level 

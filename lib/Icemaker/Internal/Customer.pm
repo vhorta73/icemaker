@@ -2,9 +2,7 @@ package Icemaker::Internal::Customer;
 
 use warnings;
 use strict;
-
 use Poet qw($conf $poet);
-use Data::Dumper;
 
 my $customer_db = $conf->get('db.customer_db');
 
@@ -35,7 +33,7 @@ sub _load {
         }
     }
  
-    my $customer = $::DBS->new()->get_hasharray({
+    my $customer = $::DBS->get_hasharray({
         db  => $customer_db,
         sql => qq{ SELECT * FROM customer WHERE $where },
         bind_values => $bind,
@@ -84,7 +82,7 @@ sub create_customer {
         bind_values => [ $args->{name} ],
     };
 
-   $::DBS->new()->execute($query);
+   $::DBS->execute($query);
 }
 
 sub _set_status {
@@ -99,7 +97,7 @@ sub _set_status {
         bind_values => [ $args->{status}, $args->{id} ],
     };
 
-    $::DBS->new()->execute($query);
+    $::DBS->execute($query);
 }
 
 sub activate_customer {
