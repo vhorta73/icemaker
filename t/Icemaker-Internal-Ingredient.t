@@ -4,6 +4,7 @@ use warnings;
 use strict;
 
 use Poet::Script qw($conf $poet);
+use Icemaker::Database::DBS;
 use Icemaker::Internal::Ingredient;
 use Test::More;
 use Test::MockModule;
@@ -12,12 +13,12 @@ my $test_db = $conf->get('db.ingredient_db');
 
 # ======== Initializing DB ======== #
 
-Icemaker::Database::DBS->new()->execute({
+$::DBS->execute({
     db  => 'mysql', 
     sql => "DROP DATABASE IF EXISTS $test_db",
 });
 
-Icemaker::Database::DBS->new()->execute({
+$::DBS->execute({
     db  => 'mysql', 
     sql => "CREATE DATABASE $test_db",
 });
@@ -39,7 +40,7 @@ my $execute = [
 ];
 
 foreach my $sql ( @$execute ) {
-    Icemaker::Database::DBS->new()->execute({db => $test_db, sql => $sql});
+    $::DBS->execute({db => $test_db, sql => $sql});
 }
 
 # ======== Testing scenarios ======== #
@@ -141,7 +142,7 @@ run_with('create_ingredient',$test_create_ingredient);
 run_with('activate_ingredient',$test_activate_ingredient);
 run_with('inactivate_ingredient',$test_inactivate_ingredient);
 
-Icemaker::Database::DBS->new()->execute({
+$::DBS->execute({
     db  => 'mysql', 
     sql => "DROP DATABASE IF EXISTS $test_db",
 });

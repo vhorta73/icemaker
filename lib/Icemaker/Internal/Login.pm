@@ -5,8 +5,6 @@ use warnings;
 
 use Poet qw($conf $poet);
 use Digest::MD5 qw(md5);
-use Icemaker::Internal::Permissions;
-use Icemaker::Database::DBS;
 
 my $user_db = $conf->get('db.user_db');
 
@@ -15,7 +13,7 @@ sub login {
     my $username = shift || return 0;
     my $password = shift || return 0;
 
-    my $user = Icemaker::Database::DBS->new()->get_hash({
+    my $user = $::DBS->get_hash({
         db  => $user_db,
         sql => qq{
             SELECT * 
@@ -67,7 +65,7 @@ sub set_password {
     my $password = shift || return 0;
     return 0 unless valid_password($password);
 
-    my $user = Icemaker::Database::DBS->new()->get_hash({
+    my $user = $::DBS->get_hash({
         db  => $user_db,
         sql => qq{
             SELECT * 
@@ -78,7 +76,7 @@ sub set_password {
     });
 
     if ( defined $user and defined $user->{id} ) {
-        Icemaker::Database::DBS->new()->execute({
+        $::DBS->execute({
             db  => $user_db,
             sql => qq{
                 UPDATE user 
@@ -88,7 +86,7 @@ sub set_password {
             bind_values => [ "Y", $self->_hashed($password), $user->{id} ],
         });
     
-        my $user_access = Icemaker::Database::DBS->new()->get_hash({
+        my $user_access = $::DBS->get_hash({
             db  => $user_db,
             sql => qq{
                 SELECT COUNT(*) cnt

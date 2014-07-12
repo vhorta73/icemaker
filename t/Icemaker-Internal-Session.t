@@ -4,6 +4,7 @@ use warnings;
 use strict;
 
 use Poet::Script qw($conf $poet);
+use Icemaker::Database::DBS;
 use Icemaker::Internal::Session;
 use Test::More;
 use Test::MockModule;
@@ -32,12 +33,12 @@ my $m = new MasonMock;
 
 # ======== Initializing DB ======== #
 
-Icemaker::Database::DBS->new()->execute({
+$::DBS->execute({
     db  => 'mysql', 
     sql => "DROP DATABASE IF EXISTS $test_db",
 });
 
-Icemaker::Database::DBS->new()->execute({
+$::DBS->execute({
     db  => 'mysql', 
     sql => "CREATE DATABASE $test_db",
 });
@@ -73,7 +74,7 @@ my $execute = [
 ];
 
 foreach my $sql ( @$execute ) {
-    Icemaker::Database::DBS->new()->execute({db => $test_db, sql => $sql});
+    $::DBS->execute({db => $test_db, sql => $sql});
 }
 
 # ======== Testing scenarios ======== #
@@ -213,7 +214,7 @@ require_ok('Icemaker::Internal::User');
 run_with2('load_user_session',$test_load_user_session);
 run_with('can',$test_can);
 
-Icemaker::Database::DBS->new()->execute({
+$::DBS->execute({
     db  => 'mysql', 
     sql => "DROP DATABASE IF EXISTS $test_db",
 });

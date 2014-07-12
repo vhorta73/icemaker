@@ -4,8 +4,6 @@ use warnings;
 use strict;
 
 use Poet qw($conf $poet);
-use Icemaker::Database::DBS;
-use Data::Dumper;
 
 my $orders_db = $conf->get('db.orders_db');
 
@@ -36,7 +34,7 @@ sub _load {
         }
     }
  
-    my $orders = Icemaker::Database::DBS->new()->get_hasharray({
+    my $orders = $::DBS->get_hasharray({
         db  => $orders_db,
         sql => qq{ SELECT * FROM orders WHERE $where },
         bind_values => $bind,
@@ -85,7 +83,7 @@ sub create_order {
         bind_values => [ $args->{customer_id} ],
     };
 
-    Icemaker::Database::DBS->new()->execute($query);
+    $::DBS->execute($query);
 }
 
 sub _set_status {
@@ -100,7 +98,7 @@ sub _set_status {
         bind_values => [ $args->{status}, $args->{id} ],
     };
 
-    Icemaker::Database::DBS->new()->execute($query);
+    $::DBS->execute($query);
 }
 
 sub set_save {

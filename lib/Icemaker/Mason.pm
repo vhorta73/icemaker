@@ -1,4 +1,4 @@
-package Icemaker::Mason;
+\package Icemaker::Mason;
 use Poet qw($conf $poet);
 use Poet::Moose;
 

@@ -8,6 +8,8 @@ my $dsn = 'dbi:mysql:';
 my $user = "";#"mysql";
 my $password = "123456";
 
+# Make this package accessible through $::DBS
+$::DBS = __PACKAGE__;
 
 sub new {
     my $self = shift;

@@ -4,6 +4,8 @@ use warnings;
 use strict;
 
 use Poet::Script qw($conf $poet);
+use Icemaker::Database::DBS;
+use Icemaker::Internal::Permissions;
 use Icemaker::Internal::Login;
 use Test::More;
 use Test::MockModule;
@@ -12,12 +14,12 @@ my $test_db = $conf->get('db.user_db');
 
 # ======== Initializing DB ======== #
 
-Icemaker::Database::DBS->new()->execute({
+$::DBS->execute({
     db  => 'mysql', 
     sql => "DROP DATABASE IF EXISTS $test_db",
 });
 
-Icemaker::Database::DBS->new()->execute({
+$::DBS->new()->execute({
     db  => 'mysql', 
     sql => "CREATE DATABASE $test_db",
 });
@@ -49,7 +51,7 @@ my $execute = [
 ];
 
 foreach my $sql ( @$execute ) {
-    Icemaker::Database::DBS->new()->execute({db => $test_db, sql => $sql});
+    $::DBS->new()->execute({db => $test_db, sql => $sql});
 }
 
 # ======== Testing scenarios ======== #
@@ -96,7 +98,7 @@ require_ok('Icemaker::Internal::User');
 run_with('set_password',$test_set_password);
 run_with('login',$test_login);
 
-Icemaker::Database::DBS->new()->execute({
+$::DBS->execute({
     db  => 'mysql', 
     sql => "DROP DATABASE IF EXISTS $test_db",
 });

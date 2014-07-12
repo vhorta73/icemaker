@@ -4,8 +4,6 @@ use warnings;
 use strict;
 
 use Poet qw($conf $poet);
-use Icemaker::Database::DBS;
-use Data::Dumper;
 
 my $package_db = $conf->get('db.package_db');
 
@@ -36,7 +34,7 @@ sub _load {
         }
     }
  
-    my $package = Icemaker::Database::DBS->new()->get_hasharray({
+    my $package = $::DBS->get_hasharray({
         db  => $package_db,
         sql => qq{ SELECT * FROM package WHERE $where },
         bind_values => $bind,
@@ -85,7 +83,7 @@ sub create_package {
         bind_values => [ $args->{name} ],
     };
 
-    Icemaker::Database::DBS->new()->execute($query);
+    $::DBS->execute($query);
 }
 
 sub _set_status {
@@ -100,7 +98,7 @@ sub _set_status {
         bind_values => [ $args->{status}, $args->{id} ],
     };
 
-    Icemaker::Database::DBS->new()->execute($query);
+    $::DBS->execute($query);
 }
 
 sub activate_package {
