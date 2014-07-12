@@ -4,20 +4,20 @@ use warnings;
 use strict;
 
 use Poet::Script qw($conf $poet);
-use Icemaker::Database::DBS;
 use Test::More;
 use Test::MockModule;
+use Icemaker::Database::DBS;
 
 my $test_db = $conf->get('db.user_db');
 
 # ======== Initializing DB ======== #
 
-Icemaker::Database::DBS->new()->execute({
+$::DBS->execute({
     db  => 'mysql', 
     sql => "DROP DATABASE IF EXISTS $test_db",
 });
 
-Icemaker::Database::DBS->new()->execute({
+$::DBS->execute({
     db  => 'mysql', 
     sql => "CREATE DATABASE $test_db",
 });
@@ -40,7 +40,7 @@ my $execute = [
 ];
 
 foreach my $sql ( @$execute ) {
-    Icemaker::Database::DBS->new()->execute({
+    $::DBS->execute({
         db  => $test_db,
         sql => $sql
     });
@@ -275,7 +275,7 @@ run_with('get_hasharray',$test_hasharray);
 run_with('get_array',$test_array);
 run_with('get_hash',$test_hash);
 
-Icemaker::Database::DBS->new()->execute({
+$::DBS->execute({
     db  => 'mysql', 
     sql => "DROP DATABASE IF EXISTS unit_test",
 });
@@ -291,7 +291,7 @@ sub run_with {
     foreach my $test_name ( keys %$test ) {
         my $expected = $test->{$test_name}->{expected};
         my $args = $test->{$test_name}->{args};
-        my $got = Icemaker::Database::DBS->new()->$sub($args);
+        my $got = $::DBS->$sub($args);
         is_deeply(
             $got,
             $expected,
