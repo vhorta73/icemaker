@@ -1,3 +1,4 @@
+-- Table to manage the machine database
 CREATE TABLE `machine` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',

@@ -1,3 +1,4 @@
+-- Table to manage all sizes of packages.
 CREATE TABLE `package` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(25) NOT NULL DEFAULT '',

@@ -1,4 +1,5 @@
-CREATE TABLE `supplier` (
+-- Table to manage customer database
+CREATE TABLE `customer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
   `name` varchar(255) NOT NULL DEFAULT '',
