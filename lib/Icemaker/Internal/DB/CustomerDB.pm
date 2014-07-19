@@ -30,7 +30,6 @@ sub new {
     if ( defined $id ) {
         $self->_load($id);
         if ( my $data = $self->_data ) {
-            
             foreach my $k ( keys %$data ) {
                 next if not defined $data->{$k};
                 $self->$k($data->{$k});
@@ -40,8 +39,8 @@ sub new {
     return $self;
 }
 
-# Object data
-sub data {
+# Object data in a hash format
+sub hash {
     my $self = shift;
     my %data = map { $_ => $self->$_ } METHODS;
     return \%data;

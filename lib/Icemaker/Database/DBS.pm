@@ -11,7 +11,7 @@ my $password = "123456";
 # Make this package accessible through $::DBS
 $::DBS = __PACKAGE__;
 
-# Make JSON easilly available
+# Make JSON available everywhere
 $::JSON = JSON::XS->new();
 
 sub new {

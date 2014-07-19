@@ -3,9 +3,9 @@ package Icemaker::Internal::DB::BaseDB;
 use Moose;
 
 has '_table', is => 'rw', isa => 'Str', required => 1;
-has '_db', is => 'rw', isa => 'Str';
+has '_db', is => 'rw', isa => 'Str', required => 1;
 has '_primary_keys', is => 'rw', isa => 'ArrayRef',  required => 1;
-has '_data',  is => 'rw';
+has '_data',  is => 'rw', isa => 'Any';
 
 # Load all table data for a given id.
 sub _load {

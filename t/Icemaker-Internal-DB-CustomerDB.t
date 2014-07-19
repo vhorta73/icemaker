@@ -46,7 +46,7 @@ foreach my $sql ( @$execute ) {
 # Test empty object 
 {
     my $obj = Icemaker::Internal::DB::CustomerDB->new();
-    my $got = $obj->data;
+    my $got = $obj->hash;
     my $expected = { 
         id => undef, 
         name => undef, 
@@ -63,7 +63,7 @@ foreach my $sql ( @$execute ) {
 {
     my $obj = Icemaker::Internal::DB::CustomerDB->new();
        $obj->id(1);
-    my $got = $obj->data;
+    my $got = $obj->hash;
     my $expected = { 
         id => 1, 
         name => undef, 
@@ -76,7 +76,7 @@ foreach my $sql ( @$execute ) {
     check($got,$expected);
 
     $obj->id(2);
-    $got = $obj->data;
+    $got = $obj->hash;
     $expected = { 
         id => 2, 
         name => undef, 
@@ -88,12 +88,12 @@ foreach my $sql ( @$execute ) {
     };
     check($got,$expected);
 
-    $got = $obj->to_json($obj->data);
+    $got = $obj->to_json($obj->hash);
     $expected = '{"email":null,"creation_date":null,"status":null,"name":null,"last_updated_date":null,"id":2,"phone":null}';
     check($got,$expected);
 
     my $obj2 = Icemaker::Internal::DB::CustomerDB->new(1);
-    my $got2 = $obj2->_data;
+    my $got2 = $obj2->hash;
     $expected = { 
         'email' => 'email@email.com',
         'creation_date' => '2014-01-01 00:00:00',
@@ -115,7 +115,7 @@ foreach my $sql ( @$execute ) {
 {
     my $obj = Icemaker::Internal::DB::CustomerDB->new();
        $obj->name("name");
-    my $got = $obj->data;
+    my $got = $obj->hash;
     my $expected = { 
         id => undef, 
         name => "name", 
@@ -132,7 +132,7 @@ foreach my $sql ( @$execute ) {
 {
     my $obj = Icemaker::Internal::DB::CustomerDB->new();
        $obj->status("Active");
-    my $got = $obj->data;
+    my $got = $obj->hash;
     my $expected = { 
         id => undef, 
         name => undef, 
@@ -149,7 +149,7 @@ foreach my $sql ( @$execute ) {
 {
     my $obj = Icemaker::Internal::DB::CustomerDB->new();
        $obj->phone(123456789);
-    my $got = $obj->data;
+    my $got = $obj->hash;
     my $expected = { 
         id => undef, 
         name => undef, 
@@ -166,7 +166,7 @@ foreach my $sql ( @$execute ) {
 {
     my $obj = Icemaker::Internal::DB::CustomerDB->new();
        $obj->email('email@email.com');
-    my $got = $obj->data;
+    my $got = $obj->hash;
     my $expected = { 
         id => undef, 
         name => undef, 
@@ -183,7 +183,7 @@ foreach my $sql ( @$execute ) {
 {
     my $obj = Icemaker::Internal::DB::CustomerDB->new();
        $obj->creation_date("2014-12-12 21:23:21");
-    my $got = $obj->data;
+    my $got = $obj->hash;
     my $expected = { 
         id => undef, 
         name => undef, 
@@ -200,7 +200,7 @@ foreach my $sql ( @$execute ) {
 {
     my $obj = Icemaker::Internal::DB::CustomerDB->new();
        $obj->last_updated_date("2022-12-12 21:23:21");
-    my $got = $obj->data;
+    my $got = $obj->hash;
     my $expected = { 
         id => undef, 
         name => undef, 
