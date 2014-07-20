@@ -146,9 +146,8 @@ sub execute {
     $self->_post_prepare();
     my $rr = $self->{_prepare};
     $rr->execute() || die "SQL Error: $DBI::errstr\n";
+    return $self->{_DB}->last_insert_id(undef,undef,undef,undef);
 }
-
-# TODO: db => 'xyz' will convert to a database to be used in $dsn .= $database
 
 1;
 
