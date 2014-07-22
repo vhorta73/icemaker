@@ -2,7 +2,9 @@ package Icemaker::Database::DBS;
 
 use Data::Dumper;
 use JSON::XS;
+use Poet qw($conf);
 use DBI qw(:sql_types);
+use Icemaker::Internal::DB::Schema;
 
 my $dsn = 'dbi:mysql:';
 my $user = "";#"mysql";
@@ -13,6 +15,13 @@ $::DBS = __PACKAGE__;
 
 # Make JSON available everywhere
 $::JSON = JSON::XS->new();
+
+# Make DBIx schema connection available everywhere
+$::DBIx = Icemaker::Internal::DB::Schema->connect(
+    $dsn.$conf->get('dbix.db'), 
+    $conf->get('dbix.usn'),
+    $conf->get('dbix.pwd')
+);
 
 sub new {
     my $self = shift;
