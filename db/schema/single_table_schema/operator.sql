@@ -7,6 +7,7 @@ CREATE TABLE `operator` (
   `creation_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_updated_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
+  UNIQUE KEY(`first_name`, `last_name`),
   KEY(`first_name`),
   KEY(`last_name`),
   KEY(`creation_date`)
