@@ -1,4 +1,4 @@
-ackage Icemaker::Internal::DB::StockOrderIngredient;
+package Icemaker::Internal::DB::StockOrderIngredient;
 
 use Icemaker::Internal::DB::Schema;
 use Poet qw($conf);
