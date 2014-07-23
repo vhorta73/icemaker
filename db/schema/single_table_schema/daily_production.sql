@@ -1,0 +1,27 @@
+-- Table to manage daily production.
+CREATE TABLE `daily_production` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) NOT NULL DEFAULT '0',
+  `machine_id` int(11) NOT NULL DEFAULT '0',
+  `recipe_id` int(11) NOT NULL DEFAULT '0',
+  `quantity_produced` decimal(7,2) NOT NULL DEFAULT '0.00',
+  `time_started` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `time_finished` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
+  `operator_id` int(11) NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `creation_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_updated_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`),
+  KEY `machine_id` (`machine_id`),
+  KEY `recipe_id` (`recipe_id`),
+  KEY `quantity_produced` (`quantity_produced`),
+  KEY `time_started` (`time_started`),
+  KEY `time_finished` (`time_finished`),
+  KEY `status` (`status`),
+  KEY `operator_id` (`operator_id`),
+  KEY `user_id` (`user_id`),
+  KEY `creation_date` (`creation_date`),
+  KEY `last_updated_date` (`last_updated_date`)
+);

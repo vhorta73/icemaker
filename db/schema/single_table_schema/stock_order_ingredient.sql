@@ -1,0 +1,26 @@
+-- Table to record stock order ingredient
+CREATE TABLE `stock_order_ingredient` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `stock_order_id` int(11) NOT NULL DEFAULT '0',
+  `ingredient_id` int(11) NOT NULL DEFAULT '0',
+  `ordered_quantity` decimal(5,2) NOT NULL DEFAULT '0.00',
+  `received_quantity` decimal(5,2) NOT NULL DEFAULT '0.00',
+  `status` enum('Prepared', 'Open', 'Cancelled', 'Incomplete','Closed') NOT NULL DEFAULT 'Prepared',
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `date_requested` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date_estimated` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date_closed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_updated_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `stock_order_id` (`stock_order_id`),
+  KEY `ingredient_id` (`ingredient_id`),
+  KEY `ordered_quantity` (`ordered_quantity`),
+  KEY `received_quantity` (`received_quantity`),
+  KEY `status` (`status`),
+  KEY `user_id` (`user_id`),
+  KEY `date_requested` (`date_requested`),
+  KEY `date_estimated` (`date_estimated`),
+  KEY `date_closed` (`date_closed`),
+  KEY `creation_date` (`creation_date`)
+);
