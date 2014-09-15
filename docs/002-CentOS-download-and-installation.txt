@@ -70,6 +70,8 @@ nameserver 0.0.0.0
 
 - Press [ESC] then press [:] and [x] and enter.
 
+/etc/init/c/networt restart
+
 - Internet should be on and you should be able to do this:
 yum update -y
 
