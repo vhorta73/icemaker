@@ -1,0 +1,75 @@
+http://isoredirect.centos.org/centos/6.5/isos/i386/
+
+- Download version 6.5 from any of the above mirror servers.
+- Open VM and Start "New" for a new VM machine creation
+- Select a name: IceMaker, Type: Linux, Version: Red Hat (32 bit)
+- Next
+- The amount of memory needed can be changed later.
+- Next
+- Create a virtual hard drive now.
+- Create
+- Select VMDK (Virtual Machine Disk)
+- Next
+- Dynamically allocated
+- Next
+- You can leave the name as is, and select less hard drive memory if you prefer. It will increase memory on the hard drive as required.
+- Create
+
+- Press Settings
+- Press "Storage" on the left hand side
+- Select the "Empty" cd under the Storage Tree, Controller: IDE. Then Press on the right hand side, the DVD with an arrow pointing down, to then choose the DVD iso downloaded above. Under Information, you should see something like: "Type: Image, Size: 6.58 Gb, Location: C:\Users\...
+- OK
+- Press Start. A new window will popup and the CentOS installation starts.
+- Select the Install or upgrade an existing system.
+- Press Skip for Test media
+- Welcome to CentOS! press OK and select throught the options what is best for you.
+- Reboot
+
+- login with root and the password you entered during installation
+- Goto Settings on the VM and select Network from the left nav. Under the Network Adapter, select Attached to: Bridged Adapter and press OK.
+- Close the system window open and select Power off the machine.
+- Press Start from the VM window - this will restart the machine with the correct setup for the internet.
+
+At this point you should have a virtual machine setup but without internet. The follwing works for windows 8.1 but may differ for other operating systems where the VM runs.
+
+To setup the internet, use any editor you prefer. vi comes installed with CentOS thus the one used to make these changes. Excute the following:
+vi /etc/sysconfig/network-scripts/ifcfg-eth0
+
+- press [Insert] and change the file to look like this:
+
+DEVICE=eth0
+HWADDR=[leave whatever is set here as is]
+NM_CONTROLLED=no
+ONBOOT=yes
+TYPE=Ethernet
+UUID=[leave whatever is set here as is]
+IPADDR=192.168.1.105
+NETMASK=255.255.255.0
+GATEWAY=192.168.1.1
+
+- Press [ESC] then press [:] and [x] and enter.
+
+vi /etc/sysconfig/networking/devices/ifcfg-eth0
+
+ONBOOT=yes
+
+- Press [ESC] then press [:] and [x] and enter.
+
+vi /etc/sysconfig/network
+
+NETWORKING=yes
+HOSTNAME=icemaker
+GATEWAY=192.168.1.252
+
+- Press [ESC] then press [:] and [x] and enter.
+
+vi /etc/resolv.conf
+
+nameserver 192.168.1.1
+nameserver 0.0.0.0
+
+- Press [ESC] then press [:] and [x] and enter.
+
+- Internet should be on and you should be able to do this:
+yum update -y
+
