@@ -5,30 +5,46 @@ use warnings;
 
 use Poet::Script qw($conf $poet);
 use Icemaker::Database::DBS;
+use Getopt::Long;
 
-my $db         = shift || "development";
+my %opt;
+
+GetOptions(
+    'db=s' => \$opt{db},
+);
+
+example() if not defined $opt{db};
+error() if grep { lc($opt{db}) eq $_ } qw/mysql information_schema/;
+
+my @dbs        = split(',', $opt{db});
 my $tmp_file   = "tmp_file.sql";
 my $schema_dir = $poet->db_dir . "/seed/schema";
 my $data_dir   = $poet->db_dir . "/seed/data";
 
-# Check if this db does not exist already
-check_database();
+foreach my $db ( @dbs ) {
+    # Check if this db does not exist already
+    check_database($db);
+}
 
-# Load all schema and data into a temp file
-load_data_from_files();
+foreach my $db ( @dbs ) {
+    # Load all schema and data into a temp file
+    load_data_from_files($db);
 
-# Upload it all to the DB
-upload_file_to_db();
+    # Upload it all to the DB
+    upload_file_to_db($db);
+}
 
 # Delete file
 delete_file();
+
+
 
 # ======================================================================= #
 #                                Functions                                #
 # ======================================================================= #
 
 sub check_database {
-    my $db = shift || "development";
+    my $db = shift;
     my $databases = $::DBS->get_array({
         db  => 'mysql',
         sql => qq{ SHOW DATABASES; }
@@ -57,6 +73,7 @@ sub get_table_data {
 }
 
 sub load_data_from_files {
+    my $db = shift;
     my $table_schema = get_table_schema();
     my $table_data   = get_table_data();
 
@@ -65,7 +82,7 @@ sub load_data_from_files {
 
     foreach my $table ( @$table_schema ) {
         open my $fh, "$schema_dir/$table" || die "Cannot open $!\n";
-        print "Preparing schema for table $table\n";
+        print "[$db] Preparing schema for table $table\n";
         while ( my $line = <$fh> ) {
             chomp $line;
             print $file "$line\n";
@@ -73,7 +90,7 @@ sub load_data_from_files {
     } 
     foreach my $table ( @$table_data ) {
         open my $fh, "$data_dir/$table" || die "Cannot open $!\n";
-        print "Preparing data for table $table\n";
+        print "[$db] Preparing data for table $table\n";
         while ( my $line = <$fh> ) {
             chomp $line;
             print $file "$line\n";
@@ -83,12 +100,27 @@ sub load_data_from_files {
 }
 
 sub upload_file_to_db {
-    print "Loading seed to DB may take a while.\nPlease enter the MySQL root password.\n";
+    my $db = shift;
+    print "[$db] Loading seed to DB may take a while.\nPlease enter the MySQL root password.\n";
     system("mysql -u root -p < /tmp/$tmp_file");
-    print "All schema and data uploaded to DB successfully.\n";
+    print "[$db] All schema and data uploaded to DB successfully.\n";
 }
 
 sub delete_file {
     my $file = shift || "/tmp/$tmp_file";
     unlink $file;
+}
+
+sub example {
+print 
+"
+    Please use $0 --db=[database] 
+    
+";
+    exit;
+}
+
+sub error {
+    print "Invalid arguments supplied!\n";
+    exit;
 }
