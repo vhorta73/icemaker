@@ -1,11 +1,9 @@
 Run the following command:
 yum install perl perl-DBD-MySQL perl-DBI httpd openssl-devel openssl mod_ssl vsftpd autoconf automake lynx gcc mod_perl cpan
 
-cpan Log::Log4perl
-
 -- Installing Poet
 curl -L http://cpanmin.us | perl - --sudo App::cpanminus
-cpanm -S --notest DateTime Poet DBIx::Class
+cpanm -S --notest DateTime Poet DBIx::Class Log::Log4perl
 
 -- Installing MySQL 5.6 (previous versions won't work correctly)
 vi /etc/yum.repos.d/public-yum-ol6.repo 
