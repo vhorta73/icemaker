@@ -5,6 +5,10 @@ use strict;
 
 use Poet::Script qw($conf $poet);
 
+use constant {
+    MAX_ACCESS_LEVEL => 3,
+};
+
 my $user_db = $conf->get('db.user_db');
 my @basics = qw/recipeorders suppliers users machines ingredients packages recipes customers/;
 
@@ -113,9 +117,16 @@ sub revoke_permission {
     }
 }
 
+# Auto-create missing permissions for users.
 sub grant_basics {
     my $self = shift;
     return if not defined $self->{id};
+    my $user = $::DBS->get_hash({
+        db  => $user_db,
+        sql => qq{ SELECT username FROM user WHERE id = ? },
+        bind_values => [ $self->{id} ],
+    });
+
     foreach my $label ( @basics ) {
         my $query = {
             db  => $user_db,
@@ -127,6 +138,7 @@ sub grant_basics {
 
         my $exists = $::DBS->get_hash($query);
         if ( defined $exists and $exists->{user_id} ) {
+
         } else {
             $query = {
                 db  => $user_db,
@@ -136,6 +148,16 @@ sub grant_basics {
                 bind_values => [ $self->{id}, $label ],
             };
         }
+        $::DBS->execute($query);
+    }
+
+    # Ensure that the master user is always available
+    if ( lc($user->{username}) eq 'master' ) {
+        my $query = {
+            db  => $user_db,
+            sql => qq{ UPDATE user_access SET level = ?, authorized = ? WHERE user_id = ? },
+            bind_values => [ MAX_ACCESS_LEVEL + 1, 'Y', $self->{id}, ],
+        };
         $::DBS->execute($query);
     }
 }
